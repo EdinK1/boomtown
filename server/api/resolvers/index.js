@@ -14,9 +14,10 @@
  *  Finish of the rest of the resolvers when you're ready.
  */
 
-const queryResolvers = require("./queries");
-const mutationResolvers = require("./mutations");
-const relationResolvers = require("./relationResolvers");
+const queryResolvers = require('./queries')
+console.log(queryResolvers)
+const mutationResolvers = require('./mutations')
+const relationResolvers = require('./relationResolvers')
 
 // const { DateScalar } = require("../custom-types");
 
@@ -25,6 +26,6 @@ module.exports = app => {
     // Date: DateScalar,
     Query: queryResolvers(app),
     Mutation: mutationResolvers(app),
-    ...relationResolvers,
-  };
-};
+    ...relationResolvers
+  }
+}

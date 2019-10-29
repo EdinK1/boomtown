@@ -1,6 +1,6 @@
-const { ApolloError } = require("apollo-server");
+const { ApolloError } = require('apollo-server')
 
-const queryResolvers = app => ({
+module.exports = app => ({
   viewer(parent, args, { user }, info) {
     /**
      * @TODO: Authentication - Server
@@ -15,24 +15,24 @@ const queryResolvers = app => ({
      *  To provide information about the user's session to the app, return the user.
      *  If there is no user, the user has signed out, in which case user will be null.
      */
-    return null;
+    return null
   },
   async user(parent, { id }, { pgResource }, info) {
     try {
-      const user = await pgResource.getUserById(id);
-      return user;
+      const user = await pgResource.getUserById(id)
+      return user
     } catch (e) {
-      throw new ApolloError(e);
+      throw new ApolloError(e)
     }
   },
   async items() {
     // @TODO: Replace this mock return statement with the correct items from Postgres
-    return [];
+    return []
     // -------------------------------
   },
   async tags() {
     // @TODO: Replace this mock return statement with the correct tags from Postgres
-    return [];
+    return []
     // -------------------------------
-  },
-});
+  }
+})

@@ -1,42 +1,42 @@
 function tagsQueryString(tags, itemid, result) {
   for (i = tags.length; i > 0; i--) {
-    result += `($${i}, ${itemid}),`;
+    result += `($${i}, ${itemid}),`
   }
-  return result.slice(0, -1) + ";";
+  return result.slice(0, -1) + ';'
 }
 
 module.exports = postgres => {
   return {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
-        text: "", // @TODO: Authentication - Server
-        values: [fullname, email, password],
-      };
+        text: '', // @TODO: Authentication - Server
+        values: [fullname, email, password]
+      }
       try {
-        const user = await postgres.query(newUserInsert);
-        return user.rows[0];
+        const user = await postgres.query(newUserInsert)
+        return user.rows[0]
       } catch (e) {
         switch (true) {
           case /users_fullname_key/.test(e.message):
-            throw "An account with this username already exists.";
+            throw 'An account with this username already exists.'
           case /users_email_key/.test(e.message):
-            throw "An account with this email already exists.";
+            throw 'An account with this email already exists.'
           default:
-            throw "There was a problem creating your account.";
+            throw 'There was a problem creating your account.'
         }
       }
     },
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: "", // @TODO: Authentication - Server
-        values: [email],
-      };
+        text: '', // @TODO: Authentication - Server
+        values: [email]
+      }
       try {
-        const user = await postgres.query(findUserQuery);
-        if (!user) throw "User was not found.";
-        return user.rows[0];
+        const user = await postgres.query(findUserQuery)
+        if (!user) throw 'User was not found.'
+        return user.rows[0]
       } catch (e) {
-        throw "User was not found.";
+        throw 'User was not found.'
       }
     },
     async getUserById(id) {
@@ -61,9 +61,9 @@ module.exports = postgres => {
        */
 
       const findUserQuery = {
-        text: "", // @TODO: Basic queries
-        values: [id],
-      };
+        text: '', // @TODO: Basic queries
+        values: [id]
+      }
 
       /**
        *  Refactor the following code using the error handling logic described above.
@@ -74,8 +74,8 @@ module.exports = postgres => {
        *  If the password is incorrect throw 'User or Password incorrect'
        */
 
-      const user = await postgres.query(findUserQuery);
-      return user;
+      const user = await postgres.query(findUserQuery)
+      return user
       // -------------------------------
     },
     async getItems(idToOmit) {
@@ -93,44 +93,42 @@ module.exports = postgres => {
          */
 
         text: ``,
-        values: idToOmit ? [idToOmit] : [],
-      });
-      return items.rows;
+        values: idToOmit ? [idToOmit] : []
+      })
+      return items.rows
     },
     async getItemsForUser(id) {
       const items = await postgres.query({
-        /**
-         *  @TODO:
-         *  Get all Items for user using their id
-         */
-        text: ``,
-        values: [id],
-      });
-      return items.rows;
+        text: `
+          SELECT * FROM ITEMS
+            WHERE itemowner = $1
+        `,
+        values: [id]
+      })
+      return items.rows
     },
     async getBorrowedItemsForUser(id) {
       const items = await postgres.query({
-        /**
-         *  @TODO:
-         *  Get all Items borrowed by user using their id
-         */
-        text: ``,
-        values: [id],
-      });
-      return items.rows;
+        text: `
+          SELECT * FROM ITEMS
+            WHERE borrower = $1
+        `,
+        values: [id]
+      })
+      return items.rows
     },
     async getTags() {
-      const tags = await postgres.query(/* @TODO: Basic queries */);
-      return tags.rows;
+      const tags = await postgres.query({ text: `SELECT * FROM tags` })
+      return tags.rows
     },
     async getTagsForItem(id) {
       const tagsQuery = {
         text: ``, // @TODO: Advanced query Hint: use INNER JOIN
-        values: [id],
-      };
+        values: [id]
+      }
 
-      const tags = await postgres.query(tagsQuery);
-      return tags.rows;
+      const tags = await postgres.query(tagsQuery)
+      return tags.rows
     },
     async saveNewItem({ item, user }) {
       /**
@@ -160,8 +158,8 @@ module.exports = postgres => {
         postgres.connect((err, client, done) => {
           try {
             // Begin postgres transaction
-            client.query("BEGIN", async err => {
-              const { title, description, tags } = item;
+            client.query('BEGIN', async err => {
+              const { title, description, tags } = item
 
               // Generate new Item query
               // @TODO
@@ -180,33 +178,33 @@ module.exports = postgres => {
               // -------------------------------
 
               // Commit the entire transaction!
-              client.query("COMMIT", err => {
+              client.query('COMMIT', err => {
                 if (err) {
-                  throw err;
+                  throw err
                 }
                 // release the client back to the pool
-                done();
+                done()
                 // Uncomment this resolve statement when you're ready!
                 // resolve(newItem.rows[0])
                 // -------------------------------
-              });
-            });
+              })
+            })
           } catch (e) {
             // Something went wrong
-            client.query("ROLLBACK", err => {
+            client.query('ROLLBACK', err => {
               if (err) {
-                throw err;
+                throw err
               }
               // release the client back to the pool
-              done();
-            });
+              done()
+            })
             switch (true) {
               default:
-                throw e;
+                throw e
             }
           }
-        });
-      });
-    },
-  };
-};
+        })
+      })
+    }
+  }
+}

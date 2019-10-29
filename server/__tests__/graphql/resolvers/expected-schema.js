@@ -24,7 +24,7 @@ module.exports = `
   type User @auth(requires: VIEWER) {
     id: ID!
     email: String!
-    fullname: String!
+    fullName: String!
     bio: String
     items: [Item]
     borrowed: [Item]
@@ -37,7 +37,7 @@ module.exports = `
 
   type File @auth(requires: VIEWER) {
     id: ID!
-    filename: String!
+    fileName: String!
     mimetype: String!
     encoding: String!
     itemid: ID!
@@ -53,7 +53,7 @@ module.exports = `
   }
  
   input SignupInput {
-    fullname: String!
+    fullName: String!
     email: String!
     password: String!
   }
@@ -82,4 +82,4 @@ module.exports = `
     signup(user: SignupInput!): User!
     addItem (item: NewItemInput!): Item 
   }
-`;
+`
