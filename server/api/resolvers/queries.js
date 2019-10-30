@@ -25,14 +25,20 @@ module.exports = app => ({
       throw new ApolloError(e)
     }
   },
-  async items() {
-    // @TODO: Replace this mock return statement with the correct items from Postgres
-    return []
-    // -------------------------------
+  async items(parent, { filter }, { pgResource }, info) {
+    try {
+      const items = await pgResource.getItems(filter)
+      return items
+    } catch (e) {
+      throw new ApolloError(e)
+    }
   },
-  async tags() {
-    // @TODO: Replace this mock return statement with the correct tags from Postgres
-    return []
-    // -------------------------------
+  async tags(parent, { pgResource }, info) {
+    try {
+      const tags = await pgResource.getTags(parent)
+      return tags
+    } catch (e) {
+      throw new ApolloError(e)
+    }
   }
 })

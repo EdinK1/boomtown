@@ -1,13 +1,15 @@
 const { gql } = require('apollo-server-express')
 
 module.exports = gql`
+  scalar Date
+
   type Item {
     id: ID!
     title: String!
     imageurl: String
     description: String!
     itemowner: User!
-    # created: Date!
+    created: Date!
     tags: [Tag]
     borrower: User
   }

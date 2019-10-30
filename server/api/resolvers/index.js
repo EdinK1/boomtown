@@ -19,11 +19,11 @@ console.log(queryResolvers)
 const mutationResolvers = require('./mutations')
 const relationResolvers = require('./relationResolvers')
 
-// const { DateScalar } = require("../custom-types");
+const { DateScalar } = require('../custom-types')
 
 module.exports = app => {
   return {
-    // Date: DateScalar,
+    Date: DateScalar,
     Query: queryResolvers(app),
     Mutation: mutationResolvers(app),
     ...relationResolvers

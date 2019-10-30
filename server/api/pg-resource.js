@@ -9,7 +9,8 @@ module.exports = postgres => {
   return {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
-        text: '', // @TODO: Authentication - Server
+        text:
+          'INSERT INTO users (fullname, email, password) VALUES ($1, $2, $3)RETURNING *',
         values: [fullname, email, password]
       }
       try {
@@ -28,7 +29,7 @@ module.exports = postgres => {
     },
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: '', // @TODO: Authentication - Server
+        text: 'SELECT * FROM users WHERE email = $1',
         values: [email]
       }
       try {
@@ -40,69 +41,27 @@ module.exports = postgres => {
       }
     },
     async getUserById(id) {
-      /**
-       *  @TODO: Handling Server Errors
-       *
-       *  Inside of our resource methods we get to determine when and how errors are returned
-       *  to our resolvers using try / catch / throw semantics.
-       *
-       *  Ideally, the errors that we'll throw from our resource should be able to be used by the client
-       *  to display user feedback. This means we'll be catching errors and throwing new ones.
-       *
-       *  Errors thrown from our resource will be captured and returned from our resolvers.
-       *
-       *  This will be the basic logic for this resource method:
-       *  1) Query for the user using the given id. If no user is found throw an error.
-       *  2) If there is an error with the query (500) throw an error.
-       *  3) If the user is found and there are no errors, return only the id, email, fullname, bio fields.
-       *     -- this is important, don't return the password!
-       *
-       *  You'll need to complete the query first before attempting this exercise.
-       */
-
       const findUserQuery = {
-        text: '', // @TODO: Basic queries
+        text: 'SELECT * FROM users WHERE id = $1',
         values: [id]
       }
-
-      /**
-       *  Refactor the following code using the error handling logic described above.
-       *  When you're done here, ensure all of the resource methods in this file
-       *  include a try catch, and throw appropriate errors.
-       *
-       *  Ex: If the user is not found from the DB throw 'User is not found'
-       *  If the password is incorrect throw 'User or Password incorrect'
-       */
-
-      const user = await postgres.query(findUserQuery)
-      return user
-      // -------------------------------
+      try {
+        const user = await postgres.query(findUserQuery)
+        return user.rows[0]
+      } catch (err) {
+        throw 'User not found'
+      }
     },
     async getItems(idToOmit) {
       const items = await postgres.query({
-        /**
-         *  @TODO:
-         *
-         *  idToOmit = ownerId
-         *
-         *  Get all Items. If the idToOmit parameter has a value,
-         *  the query should only return Items were the ownerid !== idToOmit
-         *
-         *  Hint: You'll need to use a conditional AND/WHERE clause
-         *  to your query text using string interpolation
-         */
-
-        text: ``,
+        text: `SELECT * FROM items WHERE items.itemowner !=$1;`,
         values: idToOmit ? [idToOmit] : []
       })
       return items.rows
     },
     async getItemsForUser(id) {
       const items = await postgres.query({
-        text: `
-          SELECT * FROM ITEMS
-            WHERE itemowner = $1
-        `,
+        text: `SELECT * FROM ITEMS WHERE itemowner = $1`,
         values: [id]
       })
       return items.rows
@@ -123,7 +82,7 @@ module.exports = postgres => {
     },
     async getTagsForItem(id) {
       const tagsQuery = {
-        text: ``, // @TODO: Advanced query Hint: use INNER JOIN
+        text: `SELECT * FROM tags INNER JOIN itemtags ON tags.id=itemtags.tagid WHERE itemtags.itemid= $1`,
         values: [id]
       }
 
@@ -150,52 +109,39 @@ module.exports = postgres => {
        */
 
       return new Promise((resolve, reject) => {
-        /**
-         * Begin transaction by opening a long-lived connection
-         * to a client from the client pool.
-         * - Read about transactions here: https://node-postgres.com/features/transactions
-         */
         postgres.connect((err, client, done) => {
           try {
-            // Begin postgres transaction
             client.query('BEGIN', async err => {
               const { title, description, tags } = item
 
-              // Generate new Item query
-              // @TODO
-              // -------------------------------
+              const itemQuery = {
+                text: `INSERT INTO items(title, description, itemowner) VALUES ($1, $2, $3) RETURNING *`,
+                values: [title, description, user]
+              }
+              const newItem = await postgres.query(itemQuery)
+              const tagsWithItems = {
+                text: `INSERT INTO itemtags(tagid, itemid) VALUES ${tagsQueryString(
+                  [...tags],
+                  newItem.rows[0].id,
+                  ''
+                )} `,
+                values: tags.map(tag => tag.id)
+              }
+              await postgres.query(tagsWithItems)
 
-              // Insert new Item
-              // @TODO
-              // -------------------------------
-
-              // Generate tag relationships query (use the'tagsQueryString' helper function provided)
-              // @TODO
-              // -------------------------------
-
-              // Insert tags
-              // @TODO
-              // -------------------------------
-
-              // Commit the entire transaction!
               client.query('COMMIT', err => {
                 if (err) {
                   throw err
                 }
-                // release the client back to the pool
                 done()
-                // Uncomment this resolve statement when you're ready!
-                // resolve(newItem.rows[0])
-                // -------------------------------
+                resolve(newItem.rows[0])
               })
             })
           } catch (e) {
-            // Something went wrong
             client.query('ROLLBACK', err => {
               if (err) {
                 throw err
               }
-              // release the client back to the pool
               done()
             })
             switch (true) {
