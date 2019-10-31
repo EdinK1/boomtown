@@ -2,8 +2,9 @@ const { gql } = require('apollo-server-express')
 
 module.exports = gql`
   scalar Date
+  directive @auth on OBJECT
 
-  type Item {
+  type Item @auth {
     id: ID!
     title: String!
     imageurl: String
@@ -14,7 +15,7 @@ module.exports = gql`
     borrower: User
   }
 
-  type User {
+  type User @auth {
     id: ID!
     email: String!
     fullName: String!

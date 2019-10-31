@@ -1,5 +1,6 @@
 const { ApolloServer } = require('apollo-server-express')
 const { makeExecutableSchema } = require('graphql-tools')
+const { AuthDirective } = require('../api/custom-directives')
 
 const typeDefs = require('../api/schema')
 let resolvers = require('../api/resolvers')
@@ -9,32 +10,23 @@ module.exports = ({ app, pgResource }) => {
 
   const schema = makeExecutableSchema({
     typeDefs,
-    resolvers
+    resolvers,
+    schemaDirectives: {
+      auth: AuthDirective
+    }
   })
-  // -------------------------------
 
   const apolloServer = new ApolloServer({
     context: ({ req }) => {
-      // @TODO: Uncomment this later when we add auth (to be added to Apollo's context)
-      // const tokenName = app.get("JWT_COOKIE_NAME")
-      // const token = req ? req.cookies[tokenName] : undefined
-      // let user = null
-      // -------------------------------
-      try {
-        // TODO:
-        // If there is a token, verify that token to get user info and assign it to user variable
-        // return req, token, user, pgResources
-      } catch (e) {
-        // throw error
-      }
+      const tokenName = app.get('JWT_COOKIE_NAME')
+      const token = req ? req.cookies[tokenName] : undefined
+      return { req, token, pgResource }
     },
     schema
   })
 
   apolloServer.applyMiddleware({
     app,
-    // @TODO: Add the CORS_CONFIG from your application configuration
-    cors: undefined
-    // -------------------------------
+    cors: app.get('CORS_CONFIG')
   })
 }

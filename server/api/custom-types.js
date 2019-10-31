@@ -4,14 +4,14 @@ const { GraphQLScalarType } = require('graphql')
 const DateScalar = new GraphQLScalarType({
   name: 'Date',
   description: 'Custom scalar type called Date',
-  returnValue(v) {
+  parseValue(v) {
     return new Date(v)
   },
   serialize(v) {
     return v.getTime()
   },
-  returnLiteral(v) {
-    v.kind === Kind.INT ? new Date(v.value) : null
+  parseLiteral(ast) {
+    ast.kind === Kind.INT ? new Date(ast.value) : null
   }
 })
 
