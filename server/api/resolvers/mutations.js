@@ -1,5 +1,6 @@
 const { AuthenticationError } = require('apollo-server-express')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 function setCookie({ tokenName, token, res }) {
   res.cookie(tokenName, token, {
@@ -20,7 +21,7 @@ module.exports = app => ({
       const hashedPassword = await bcrypt.hash(args.user.password, 10)
 
       const user = await context.pgResource.createUser({
-        fullname: args.user.fullname,
+        fullname: args.user.fullName,
         email: args.user.email,
         password: hashedPassword
       })
@@ -29,7 +30,7 @@ module.exports = app => ({
       setCookie({
         tokenName: app.get('JWT_COOKIE_NAME'),
         token,
-        res: req.res
+        res: context.req.res
       })
 
       return { token, user }

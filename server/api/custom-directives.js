@@ -22,6 +22,7 @@ class AuthDirective extends SchemaDirectiveVisitor {
       const { resolve = defaultFieldResolver } = field
       field.resolve = async function(parent, args, context, info) {
         const { token, req } = context
+        console.log('here')
         if (
           !token &&
           req.body.operationName !== 'login' &&

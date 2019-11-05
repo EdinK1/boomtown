@@ -20,7 +20,7 @@ module.exports = app => ({
       throw new ApolloError(e)
     }
   },
-  async tags(parent, { pgResource }, info) {
+  async tags(parent, args, { pgResource }, info) {
     try {
       const tags = await pgResource.getTags(parent)
       return tags

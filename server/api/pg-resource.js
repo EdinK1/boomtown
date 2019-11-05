@@ -8,12 +8,14 @@ function tagsQueryString(tags, itemid, result) {
 module.exports = postgres => {
   return {
     async createUser({ fullname, email, password }) {
+      console.log('create')
       const newUserInsert = {
         text:
-          'INSERT INTO users (fullname, email, password) VALUES ($1, $2, $3)RETURNING *',
+          'INSERT INTO users ("fullName", email, password) VALUES ($1, $2, $3) RETURNING *',
         values: [fullname, email, password]
       }
       try {
+        console.log(newUserInsert)
         const user = await postgres.query(newUserInsert)
         return user.rows[0]
       } catch (e) {
@@ -54,7 +56,7 @@ module.exports = postgres => {
     },
     async getItems(idToOmit) {
       const items = await postgres.query({
-        text: `SELECT * FROM items WHERE items.itemowner !=$1;`,
+        text: `SELECT * FROM items`,
         values: idToOmit ? [idToOmit] : []
       })
       return items.rows
@@ -90,24 +92,6 @@ module.exports = postgres => {
       return tags.rows
     },
     async saveNewItem({ item, user }) {
-      /**
-       *  @TODO: Adding a New Item
-       *
-       *  Adding a new Item requires 2 separate INSERT statements.
-       *
-       *  All of the INSERT statements must:
-       *  1) Proceed in a specific order.
-       *  2) Succeed for the new Item to be considered added
-       *  3) If any of the INSERT queries fail, any successful INSERT
-       *     queries should be 'rolled back' to avoid 'orphan' data in the database.
-       *
-       *  To achieve #3 we'll ue something called a Postgres Transaction!
-       *  The code for the transaction has been provided for you, along with
-       *  helpful comments to help you get started.
-       *
-       *  Read the method and the comments carefully before you begin.
-       */
-
       return new Promise((resolve, reject) => {
         postgres.connect((err, client, done) => {
           try {
