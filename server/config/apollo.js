@@ -1,6 +1,7 @@
 const { ApolloServer } = require('apollo-server-express')
 const { makeExecutableSchema } = require('graphql-tools')
 const { AuthDirective } = require('../api/custom-directives')
+const jwt = require('jsonwebtoken')
 
 const typeDefs = require('../api/schema')
 let resolvers = require('../api/resolvers')
@@ -20,9 +21,11 @@ module.exports = ({ app, pgResource }) => {
     context: ({ req }) => {
       const tokenName = app.get('JWT_COOKIE_NAME')
       const token = req ? req.cookies[tokenName] : undefined
-      return { req, token, pgResource }
+        
+      if (token) user = jwt.verify(token, app.get('JWT_SECRET'))
+      return {req, token, pgResource }
     },
-    schema
+    schema,
   })
 
   apolloServer.applyMiddleware({

@@ -21,12 +21,10 @@ class AuthDirective extends SchemaDirectiveVisitor {
       const field = fields[fieldName]
       const { resolve = defaultFieldResolver } = field
       field.resolve = async function(parent, args, context, info) {
-        const { token, req } = context
-        console.log('here')
         if (
-          !token &&
-          req.body.operationName !== 'login' &&
-          req.body.operationName !== 'signup'
+          !context.token &&
+          context.req.body.operationName !== 'login' &&
+          context.req.body.operationName !== 'signup'
         ) {
           throw new ForbiddenError('Authentication token missing')
         }
