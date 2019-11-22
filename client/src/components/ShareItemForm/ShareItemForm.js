@@ -34,7 +34,29 @@ class ShareForm extends Component {
             render={({ handleSubmit }) => (
               <form onSubmit={handleSubmit} className={classes.form}>
                 <FormControl fullWidth className={classes.formControl}>
-                  <InputLabel htmlFor='itemName'>{state.title}</InputLabel>
+                  <Typography className={classes.formTitle} component='h1'>
+                    Share. Borrow. Prosper
+                  </Typography>
+                </FormControl>
+                <FormControl fullWidth className={classes.formControl}>
+                  <InputLabel htmlFor='itemImg'>Add image url</InputLabel>
+                  <Field
+                    name='itemImg'
+                    render={({ input, meta }) => (
+                      <Input
+                        id='itemImg'
+                        type='text'
+                        error={meta.touched && !!meta.error}
+                        inputProps={{
+                          ...input,
+                          autoComplete: 'off'
+                        }}
+                      />
+                    )}
+                  />
+                </FormControl>
+                <FormControl fullWidth className={classes.formControl}>
+                  <InputLabel htmlFor='itemName'>Name your item</InputLabel>
                   <Field
                     name='itemName'
                     render={({ input, meta }) => (
@@ -50,21 +72,12 @@ class ShareForm extends Component {
                     )}
                   />
                 </FormControl>
-
                 <FormControl fullWidth className={classes.formControl}>
-                  <Field
-                    name='itemDesc'
-                    render={({ input, meta }) => (
-                      <TextField
-                        id='itemDesc'
-                        placeholder={state.desc}
-                        error={meta.touched && !!meta.error}
-                        inputProps={{
-                          ...input,
-                          autoComplete: 'off'
-                        }}
-                      />
-                    )}
+                  <TextField
+                    id='itemDesc'
+                    label='Describe your item'
+                    multiline
+                    rows='4'
                   />
                 </FormControl>
 

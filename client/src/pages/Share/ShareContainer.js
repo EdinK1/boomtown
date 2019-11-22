@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Share from './Share';
+import React, { Component } from 'react'
+import Share from './Share'
 // import FullScreenLoader from '../../components/FullScreenLoader';
 // import { Query } from 'react-apollo';
 // import { } from '../../apollo/queries';
@@ -7,8 +7,8 @@ import Share from './Share';
 
 class ShareContainer extends Component {
   render() {
-    return <Share />;
+    return <Share />
   }
 }
 
-export default ShareContainer;
+export default ShareContainer

@@ -7,6 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { ItemPreviewContext } from '../../context/ItemPreviewProvider'
+import Avatar from '@material-ui/core/Avatar'
 
 import { withStyles } from '@material-ui/core/styles'
 
@@ -23,20 +24,38 @@ export class ShareItemPreview extends Component {
               <CardMedia
                 component='img'
                 alt={state.item.title}
-                height='300'
+                height='230'
                 image={state.item.imageUrl}
               />
               <CardContent>
-                <Typography gutterBottom variant='h5' component='h2'>
-                  {state.item.title}
-                </Typography>
-                <Typography variant='body2' color='textSecondary' component='p'>
-                  {state.item.desc}
-                </Typography>
+                <div>
+                  <Avatar
+                    alt='Owner Avatar'
+                    src={state.item.itemowner}
+                    className={classes.avatar}
+                  />
+                  {/* <span>{state.item.itemowner}</span> */}
+                </div>
+                <section className={classes.cardContent}>
+                  <Typography gutterBottom variant='h5' component='h2'>
+                    {state.item.title}
+                  </Typography>
+                  <Typography
+                    variant='body2'
+                    color='textSecondary'
+                    component='p'
+                  >
+                    {state.item.desc}
+                  </Typography>
+                </section>
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button size='small' color='primary'>
+              <Button
+                className={classes.borrowBtn}
+                size='small'
+                color='secondary'
+              >
                 Borrow
               </Button>
             </CardActions>

@@ -13,15 +13,14 @@ import styles from './styles'
 
 */
 import ShareItemForm from '../../components/ShareItemForm'
-// import ShareItemPreview from '../../components/ShareItemPreview';
 import ShareItemPreview from '../../components/ShareItemPreview/index'
 
 const Share = ({ classes }) => {
   return (
-    <div style={{ display: 'flex' }}>
+    <main className={classes.container}>
       <ShareItemPreview />
       <ShareItemForm />
-    </div>
+    </main>
   )
 }
 

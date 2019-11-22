@@ -37,7 +37,6 @@ class AccountForm extends Component {
 
   render() {
     const { classes } = this.props
-    console.log(classes)
 
     return (
       <Form
@@ -57,6 +56,7 @@ class AccountForm extends Component {
                       inputProps={{
                         autoComplete: 'off'
                       }}
+                      value={input.value}
                     />
                   )}
                 />
@@ -74,6 +74,7 @@ class AccountForm extends Component {
                     inputProps={{
                       autoComplete: 'off'
                     }}
+                    value={input.value}
                   />
                 )}
               />
@@ -90,6 +91,7 @@ class AccountForm extends Component {
                     inputProps={{
                       autoComplete: 'off'
                     }}
+                    value={input.value}
                   />
                 )}
               />
@@ -116,11 +118,7 @@ class AccountForm extends Component {
                     className={classes.formToggle}
                     type='button'
                     onClick={() => {
-                      // @TODO: Reset the form on submit
                       this.setState({
-                        username: '',
-                        email: '',
-                        password: '',
                         formToggle: !this.state.formToggle
                       })
                     }}

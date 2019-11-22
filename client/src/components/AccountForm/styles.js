@@ -1,10 +1,10 @@
 const styles = theme => ({
   formControl: {
-    marginBottom: theme.spacing.unit * 2,
+    marginBottom: theme.spacing(2),
     width: '100%'
   },
   formButton: {
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   formToggle: {
     background: 'none',
@@ -23,6 +23,6 @@ const styles = theme => ({
   errorMessage: {
     color: 'firebrick'
   }
-});
+})
 
-export default styles;
+export default styles
