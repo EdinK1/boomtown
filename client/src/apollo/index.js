@@ -1,16 +1,17 @@
-import { ApolloClient } from 'apollo-client';
-import { ApolloLink } from 'apollo-link';
-import { createHttpLink } from "apollo-link-http";
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { onError } from 'apollo-link-error';
+import { ApolloClient } from 'apollo-client'
+import { ApolloLink } from 'apollo-link'
+import { createHttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { onError } from 'apollo-link-error'
 
 const httpLink = createHttpLink({
   includeExtensions: true,
-  // @TODO: If `process.env.NODE_ENV !== 'production'`, then use localhost's GraphQL endpoint
-  uri: undefined,
-  // -------------------------------
+  uri:
+    process.env.NODE_ENV !== 'production'
+      ? 'http://localhost:3000/graphql'
+      : '/graphql',
   credentials: process.env.NODE_ENV === 'production' ? 'same-origin' : 'include'
-});
+})
 
 const client = new ApolloClient({
   link: ApolloLink.from([
@@ -21,17 +22,18 @@ const client = new ApolloClient({
           console.log(
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
           )
-        );
+        )
       }
-      if (networkError) console.log(`[Network error]: ${networkError}`);
-    })
+      if (networkError) console.log(`[Network error]: ${networkError}`)
+    }),
+    httpLink
     /**
      * @TODO: Set your httpLink link as the next item in this array.
-     * Read about httpLink here: 
+     * Read about httpLink here:
      * Don't forget to add to add a comma after the first array item above!
      */
   ]),
   cache: new InMemoryCache() // Pull data from client-side cache, if available
-});
+})
 
-export default client;
+export default client
