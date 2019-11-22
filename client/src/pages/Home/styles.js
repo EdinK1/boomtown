@@ -9,16 +9,20 @@ const styles = theme => ({
     }
   },
   headline: {
-    fontWeight: 500,
+    fontWeight: 800,
     color: theme.palette.text.primary,
     fontSize: theme.typography.h3.fontSize,
     [theme.breakpoints.up('md')]: {
-      fontSize: theme.typography.h1.fontSize
+      fontSize: '7rem',
+      lineHeight: '1.15'
     }
   },
   subheading: {
     fontWeight: 400,
     color: 'white'
+  },
+  welcomeTitle: {
+    fontSize: '1.5rem'
   }
 })
 
