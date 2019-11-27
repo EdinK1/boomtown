@@ -7,15 +7,13 @@ function tagsQueryString(tags, itemid, result) {
 
 module.exports = postgres => {
   return {
-    async createUser({ fullname, email, password }) {
-      console.log('create')
+    async createUser({ fullName, email, password }) {
       const newUserInsert = {
         text:
           'INSERT INTO users ("fullName", email, password) VALUES ($1, $2, $3) RETURNING *',
-        values: [fullname, email, password]
+        values: [fullName, email, password]
       }
       try {
-        console.log(newUserInsert)
         const user = await postgres.query(newUserInsert)
         return user.rows[0]
       } catch (e) {
@@ -56,7 +54,7 @@ module.exports = postgres => {
     },
     async getItems(idToOmit) {
       const items = await postgres.query({
-        text: `SELECT * FROM items ${idToOmit ? `WHERE"ownerId" != $1`: ``}`,
+        text: `SELECT * FROM items ${idToOmit ? `WHERE"ownerId" != $1` : ``}`,
         values: idToOmit ? [idToOmit] : []
       })
       return items.rows

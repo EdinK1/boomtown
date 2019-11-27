@@ -21,10 +21,12 @@ module.exports = app => ({
       const hashedPassword = await bcrypt.hash(args.user.password, 10)
 
       const user = await context.pgResource.createUser({
-        fullname: args.user.fullName,
+        fullName: args.user.fullName,
         email: args.user.email,
         password: hashedPassword
       })
+
+      console.log('hey')
 
       const token = generateToken(user, app.get('JWT_SECRET'))
       setCookie({
@@ -39,27 +41,18 @@ module.exports = app => ({
     }
   },
 
-  async login(
-    parent,
-    {
-      user: { email, password }
-    },
-    { pgResource, req }
-  ) {
+  async login(parent, { user: { email, password } }, { pgResource, req }) {
     try {
       const user = await pgResource.getUserAndPasswordForVerification(email)
       if (!user) throw 'User was not found.'
       const valid = await bcrypt.compare(password, user.password)
       if (!valid) throw 'Invalid Password'
-
       const token = generateToken(user, app.get('JWT_SECRET'))
-
       setCookie({
         tokenName: app.get('JWT_COOKIE_NAME'),
         token,
         res: req.res
       })
-
       return {
         token,
         user
@@ -71,6 +64,7 @@ module.exports = app => ({
 
   logout(parent, args, context) {
     context.req.res.clearCookie(app.get('JWT_COOKIE_NAME'))
+
     return true
   },
   async addItem(parent, args, context, info) {

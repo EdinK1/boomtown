@@ -1,15 +1,13 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import styles from './styles';
+import React from 'react'
+import { withStyles } from '@material-ui/core/styles'
+import styles from './styles'
 
 const Items = ({ classes }) => {
   return (
     <div>
-      <p>
-        This is the items page located at <code>/items</code>.
-      </p>
+      <h1>yo/front-page</h1>
     </div>
-  );
-};
+  )
+}
 
-export default withStyles(styles)(Items);
+export default withStyles(styles)(Items)

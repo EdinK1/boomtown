@@ -8,7 +8,7 @@ const httpLink = createHttpLink({
   includeExtensions: true,
   uri:
     process.env.NODE_ENV !== 'production'
-      ? 'http://localhost:3000/graphql'
+      ? 'http://localhost:8080/graphql'
       : '/graphql',
   credentials: process.env.NODE_ENV === 'production' ? 'same-origin' : 'include'
 })
@@ -27,11 +27,6 @@ const client = new ApolloClient({
       if (networkError) console.log(`[Network error]: ${networkError}`)
     }),
     httpLink
-    /**
-     * @TODO: Set your httpLink link as the next item in this array.
-     * Read about httpLink here:
-     * Don't forget to add to add a comma after the first array item above!
-     */
   ]),
   cache: new InMemoryCache() // Pull data from client-side cache, if available
 })

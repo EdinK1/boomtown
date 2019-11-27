@@ -1,10 +1,19 @@
 import React from 'react'
+import ViewerContext from '../../context/ViewerProvider'
 
 const Loader = () => (
-  <>
-    <p>spinner...</p>
-    <p>“For it is in giving that we receive.”</p>
-  </>
+  <ViewerContext.Consumer>
+    {({ viewer, loading }) => {
+      if (loading) {
+        return (
+          <>
+            <p>spinner...</p>
+            <p>“For it is in giving that we receive.”</p>
+          </>
+        )
+      }
+    }}
+  </ViewerContext.Consumer>
 )
 
-export default Loading
+export default Loader

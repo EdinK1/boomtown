@@ -15,6 +15,7 @@ import logo from '../../images/boomtown.svg'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import Fingerprint from '@material-ui/icons/Fingerprint'
 import LogOut from '@material-ui/icons/PowerSettingsNew'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -59,9 +60,9 @@ export default function MenuAppBar() {
     <div className={classes.root}>
       <AppBar position='fixed'>
         <Toolbar className={classes.nav}>
-          <div>
+          <Link to='/items'>
             <img src={logo} className={classes.logo} />
-          </div>
+          </Link>
           {auth && (
             <div>
               <IconButton
@@ -90,7 +91,7 @@ export default function MenuAppBar() {
               >
                 <MenuItem className={classes.navMenuList} onClick={handleClose}>
                   <Fingerprint className={classes.navMenuListIcon} />
-                  Your Profile
+                  <Link to='/profile'>Your Profile</Link>
                 </MenuItem>
                 <MenuItem className={classes.navMenuList} onClick={handleClose}>
                   <LogOut className={classes.navMenuListIcon} />

@@ -11,9 +11,9 @@ const styles = theme => ({
   headline: {
     fontWeight: 800,
     color: theme.palette.text.primary,
-    fontSize: theme.typography.h3.fontSize,
+    fontSize: '3.4rem',
     [theme.breakpoints.up('md')]: {
-      fontSize: '7rem',
+      fontSize: '3.4rem',
       lineHeight: '1.15'
     }
   },

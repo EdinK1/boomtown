@@ -6,12 +6,6 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import React, { Component } from 'react'
 import Typography from '@material-ui/core/Typography'
-/**
- * @TODO: Uncomment the following lines when authentication is added to the form
- *
- *
- */
-
 import { Form, Field } from 'react-final-form'
 import { graphql, compose } from 'react-apollo'
 import {
@@ -19,7 +13,7 @@ import {
   SIGNUP_MUTATION,
   VIEWER_QUERY
 } from '../../apollo/queries'
-import validate from './helpers/validation'
+// import validate from './helpers/validation'
 
 import styles from './styles'
 
@@ -31,29 +25,31 @@ class AccountForm extends Component {
     }
   }
 
-  onSubmit() {
-    console.log(this.state)
-  }
-
   render() {
-    const { classes } = this.props
-
+    const { classes, login, signup } = this.props
     return (
       <Form
-        onSubmit={this.onSubmit}
-        render={({ handleSubmit }) => (
+        onSubmit={values => {
+          const userMutation = {
+            variables: {
+              user: values
+            }
+          }
+          this.state.formToggle ? login(userMutation) : signup(userMutation)
+        }}
+        render={({ handleSubmit, form, invalid, pristine, values }) => (
           <form onSubmit={handleSubmit} className={classes.accountForm}>
             {!this.state.formToggle && (
               <FormControl fullWidth className={classes.formControl}>
-                <InputLabel htmlFor='fullname'>Username</InputLabel>
+                <InputLabel htmlFor='fullName'>Username</InputLabel>
                 <Field
-                  name='fullname'
+                  name='fullName'
                   render={({ input, meta }) => (
                     <Input
-                      id='fullname'
+                      id='fullName'
                       type='text'
-                      {...input}
                       inputProps={{
+                        ...input,
                         autoComplete: 'off'
                       }}
                       value={input.value}
@@ -70,8 +66,8 @@ class AccountForm extends Component {
                   <Input
                     id='email'
                     type='email'
-                    {...input}
                     inputProps={{
+                      ...input,
                       autoComplete: 'off'
                     }}
                     value={input.value}
@@ -83,12 +79,12 @@ class AccountForm extends Component {
               <InputLabel htmlFor='password'>Password</InputLabel>
               <Field
                 name='password'
+                type='password'
                 render={({ input, meta }) => (
                   <Input
                     id='password'
-                    type='password'
-                    {...input}
                     inputProps={{
+                      ...input,
                       autoComplete: 'off'
                     }}
                     value={input.value}
@@ -119,7 +115,10 @@ class AccountForm extends Component {
                     type='button'
                     onClick={() => {
                       this.setState({
-                        formToggle: !this.state.formToggle
+                        formToggle: !this.state.formToggle,
+                        fullname: '',
+                        email: '',
+                        password: ''
                       })
                     }}
                   >
@@ -140,24 +139,28 @@ class AccountForm extends Component {
   }
 }
 
-// @TODO: Use compose to add the login and signup mutations to this components props.
-// @TODO: Refetch the VIEWER_QUERY to reload the app and access authenticated routes.
+const refetchQueries = [
+  {
+    query: VIEWER_QUERY
+  }
+]
+
 export default compose(
   graphql(SIGNUP_MUTATION, {
     options: {
       query: {
-        VIEWER_QUERY
-      },
-      name: 'signup'
-    }
+        refetchQueries
+      }
+    },
+    name: 'signup'
   }),
   graphql(LOGIN_MUTATION, {
     options: {
       query: {
         VIEWER_QUERY
-      },
-      name: 'login'
-    }
+      }
+    },
+    name: 'login'
   }),
   withStyles(styles)
 )(AccountForm)

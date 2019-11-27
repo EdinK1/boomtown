@@ -3,10 +3,10 @@ import React, { Component, createContext, Children } from 'react'
 export const ItemPreviewContext = createContext()
 
 const initialState = {
-  title: 'Name your Item',
-  desc: 'Describe your item',
+  itemName: 'Name your Item',
+  itemDesc: 'Describe your item',
   tags: [],
-  imageUrl: 'https://via.placeholder.com/300',
+  itemImg: 'https://via.placeholder.com/300',
   itemowner: {},
   created: new Date()
 }
@@ -17,9 +17,8 @@ class ItemPreviewProvider extends Component {
     this.state = { item: initialState }
   }
 
-  updatePreview = item => {
-    const updatedItem = { ...this.state.item, ...item }
-    this.setState({ item: updatedItem })
+  updatePreview = (name, value) => {
+    this.setState(state => ({ item: { ...state.item, [name]: value } }))
   }
 
   resetPreview = () => {
