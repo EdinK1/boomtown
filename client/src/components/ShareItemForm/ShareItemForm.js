@@ -9,11 +9,11 @@ import TextField from '@material-ui/core/TextField'
 import React, { Component } from 'react'
 import Typography from '@material-ui/core/Typography'
 import { Select, Checkbox } from '@material-ui/core'
-
+import { ALL_TAGS_QUERY } from '../../apollo/queries'
+import { graphql, compose } from 'react-apollo'
 import { Form, Field } from 'react-final-form'
 import styles from './styles'
 import { ItemPreviewContext } from '../../context/ItemPreviewProvider'
-import { ALL_USER_ITEMS_QUERY } from '../../apollo/queries'
 
 class ShareForm extends Component {
   constructor(props) {
@@ -25,18 +25,7 @@ class ShareForm extends Component {
   }
 
   render() {
-    const { classes } = this.props
-
-    const TAGS_QUERY = {}
-    const tags = [
-      'Household Items',
-      'Tools',
-      'Electronics',
-      'Physical Media',
-      'Sporting Goods',
-      'Musical Instruments',
-      'Recreational Equipment'
-    ]
+    const { classes, allItems } = this.props
 
     return (
       <ItemPreviewContext.Consumer>
@@ -113,18 +102,24 @@ class ShareForm extends Component {
                   <Field
                     name='tags'
                     render={({ input }) => (
-                      <Select className={classes.formSelect} id='tags'>
-                        {tags.map(tag => (
-                          <li className={classes.formOptionList}>
-                            <Checkbox />
-                            <MenuItem
-                              className={classes.formOption}
-                              value={tag}
-                            >
-                              {tag}
-                            </MenuItem>
-                          </li>
-                        ))}
+                      <Select
+                        value={allItems.tags}
+                        className={classes.formSelect}
+                        id='tags'
+                      >
+                        {allItems &&
+                          allItems.tags &&
+                          allItems.tags.map(({ title }) => (
+                            <li className={classes.formOptionList}>
+                              <Checkbox />
+                              <MenuItem
+                                className={classes.formOption}
+                                value={title}
+                              >
+                                {title}
+                              </MenuItem>
+                            </li>
+                          ))}
                       </Select>
                     )}
                   />
@@ -149,4 +144,14 @@ class ShareForm extends Component {
   }
 }
 
-export default withStyles(styles)(ShareForm)
+export default compose(
+  graphql(ALL_TAGS_QUERY, {
+    options: {
+      query: {
+        ALL_TAGS_QUERY
+      }
+    },
+    name: 'allItems'
+  }),
+  withStyles(styles)
+)(ShareForm)

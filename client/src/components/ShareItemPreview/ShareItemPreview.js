@@ -10,6 +10,7 @@ import Avatar from '@material-ui/core/Avatar'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 import { ItemPreviewContext } from '../../context/ItemPreviewProvider'
+import ItemCard from '../ItemCard/'
 
 export class ShareItemPreview extends Component {
   render() {
@@ -17,46 +18,12 @@ export class ShareItemPreview extends Component {
     return (
       <ItemPreviewContext.Consumer>
         {({ state, updatePreview, resetPreview }) => (
-          <Card className={classes.card}>
-            <CardActionArea>
-              <CardMedia
-                component='img'
-                height='230'
-                image={state.item.itemImg}
-              />
-              <CardContent>
-                <div>
-                  <Avatar
-                    alt='Owner Avatar'
-                    src={state.item.itemowner}
-                    className={classes.avatar}
-                  />
-                  {/* <span>{state.item.itemowner}</span> */}
-                </div>
-                <section className={classes.cardContent}>
-                  <Typography gutterBottom variant='h5' component='h2'>
-                    {state.item.itemName}
-                  </Typography>
-                  <Typography
-                    variant='body2'
-                    color='textSecondary'
-                    component='p'
-                  >
-                    {state.item.itemDesc}
-                  </Typography>
-                </section>
-              </CardContent>
-            </CardActionArea>
-            <CardActions>
-              <Button
-                className={classes.borrowBtn}
-                size='small'
-                color='secondary'
-              >
-                Borrow
-              </Button>
-            </CardActions>
-          </Card>
+          <ItemCard
+            imageUrl={state.item.imageUrl}
+            itemOwner={state.item.itemowner}
+            itemName={state.item.itemName}
+            itemDesc={state.item.itemDesc}
+          />
         )}
       </ItemPreviewContext.Consumer>
     )
