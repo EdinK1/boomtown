@@ -1,5 +1,6 @@
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
+import { withRouter } from 'react-router'
 import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
@@ -10,8 +11,8 @@ import { Form, Field } from 'react-final-form'
 import { graphql, compose } from 'react-apollo'
 import {
   LOGIN_MUTATION,
-  SIGNUP_MUTATION,
-  VIEWER_QUERY
+  SIGNUP_MUTATION
+  // VIEWER_QUERY
 } from '../../apollo/queries'
 // import validate from './helpers/validation'
 
@@ -36,6 +37,8 @@ class AccountForm extends Component {
             }
           }
           this.state.formToggle ? login(userMutation) : signup(userMutation)
+          this.props.history.push('/items')
+          console.log(userMutation)
         }}
         render={({ handleSubmit, form, invalid, pristine, values }) => (
           <form onSubmit={handleSubmit} className={classes.accountForm}>
@@ -139,28 +142,19 @@ class AccountForm extends Component {
   }
 }
 
-const refetchQueries = [
-  {
-    query: VIEWER_QUERY
-  }
-]
+// const refetchQueries = [
+//   {
+//     query: VIEWER_QUERY
+//   }
+// ]
 
 export default compose(
   graphql(SIGNUP_MUTATION, {
-    options: {
-      query: {
-        refetchQueries
-      }
-    },
     name: 'signup'
   }),
   graphql(LOGIN_MUTATION, {
-    options: {
-      query: {
-        VIEWER_QUERY
-      }
-    },
     name: 'login'
   }),
-  withStyles(styles)
+  withStyles(styles),
+  withRouter
 )(AccountForm)

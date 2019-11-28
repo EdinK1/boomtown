@@ -1,15 +1,15 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import styles from './styles';
+import React from 'react'
+import { withStyles } from '@material-ui/core/styles'
+import styles from './styles'
 
 const Profile = ({ classes }) => {
   return (
-    <div>
-      <p>
-        This is the profile page located at <code>/profile/:userId</code>.
-      </p>
-    </div>
-  );
-};
+    <main>
+      <header>
+        <h1 style={{ fontSize: '10rem' }}>hehe</h1>
+      </header>
+    </main>
+  )
+}
 
-export default withStyles(styles)(Profile);
+export default withStyles(styles)(Profile)

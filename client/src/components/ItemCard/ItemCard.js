@@ -32,7 +32,10 @@ const ItemCard = ({ imageUrl, itemOwner, itemName, itemDesc }) => {
         <CardMedia
           component='img'
           height='230'
-          image={imageUrl || 'https://via.placeholder.com/300x300'}
+          image={
+            imageUrl ||
+            'https://via.placeholder.com/300x300?text=Please select an image'
+          }
         />
         <CardContent>
           <div>

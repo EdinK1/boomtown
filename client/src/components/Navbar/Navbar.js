@@ -1,23 +1,20 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
-import AccountCircle from '@material-ui/icons/AccountCircle'
-import Switch from '@material-ui/core/Switch'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormGroup from '@material-ui/core/FormGroup'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
+import { useHistory } from 'react-router-dom'
+import { makeStyles } from '@material-ui/core/styles'
 import logo from '../../images/boomtown.svg'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import Fingerprint from '@material-ui/icons/Fingerprint'
 import LogOut from '@material-ui/icons/PowerSettingsNew'
 import { Link } from 'react-router-dom'
+import { graphql, compose } from 'react-apollo'
 import Button from '@material-ui/core/Button'
+import { LOGOUT_MUTATION } from '../../apollo/queries'
+import Navbar from '.'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -54,20 +51,27 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function MenuAppBar() {
+const MenuAppBar = ({ logout, ...props }) => {
   const classes = useStyles()
   const [auth, setAuth] = useState(true)
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const history = useHistory()
-  console.log(history)
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose = () => {
+  const logOutFunc = values => {
+    const logOutMutation = {
+      variables: {
+        user: values
+      }
+    }
+    logout(logOutMutation)
+    history.push('/welcome')
     setAnchorEl(null)
+    console.log(logOutMutation)
   }
 
   return (
@@ -111,18 +115,18 @@ export default function MenuAppBar() {
                     horizontal: 'right'
                   }}
                   open={open}
-                  onClose={handleClose}
+                  onClose={() => setAnchorEl(null)}
                 >
                   <MenuItem
                     className={classes.navMenuList}
-                    onClick={handleClose}
+                    onClick={() => setAnchorEl(null)}
                   >
                     <Fingerprint className={classes.navMenuListIcon} />
                     <Link to='/profile'>Your Profile</Link>
                   </MenuItem>
                   <MenuItem
                     className={classes.navMenuList}
-                    onClick={handleClose}
+                    onClick={logOutFunc}
                   >
                     <LogOut className={classes.navMenuListIcon} />
                     Sign Out
@@ -136,3 +140,8 @@ export default function MenuAppBar() {
     </div>
   )
 }
+export default compose(
+  graphql(LOGOUT_MUTATION, {
+    name: 'logout'
+  })
+)(MenuAppBar)

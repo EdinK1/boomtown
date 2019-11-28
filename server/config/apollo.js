@@ -21,11 +21,11 @@ module.exports = ({ app, pgResource }) => {
     context: ({ req }) => {
       const tokenName = app.get('JWT_COOKIE_NAME')
       const token = req ? req.cookies[tokenName] : undefined
-        
+
       if (token) user = jwt.verify(token, app.get('JWT_SECRET'))
-      return {req, token, pgResource }
+      return { req, token, pgResource }
     },
-    schema,
+    schema
   })
 
   apolloServer.applyMiddleware({

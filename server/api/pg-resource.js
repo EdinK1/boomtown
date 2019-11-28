@@ -61,7 +61,7 @@ module.exports = postgres => {
     },
     async getItemsForUser(id) {
       const items = await postgres.query({
-        text: `SELECT * FROM ITEMS WHERE itemowner = $1`,
+        text: `SELECT * FROM ITEMS WHERE ownnerId = $1`,
         values: [id]
       })
       return items.rows

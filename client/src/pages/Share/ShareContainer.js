@@ -3,11 +3,16 @@ import Share from './Share'
 // import FullScreenLoader from '../../components/FullScreenLoader';
 // import { Query } from 'react-apollo';
 // import { } from '../../apollo/queries';
+import Navbar from '../../components/Navbar/index'
 // Hint: query tags
 
 class ShareContainer extends Component {
   render() {
-    return <Share />
+    return (
+      <>
+        <Share />
+      </>
+    )
   }
 }
 

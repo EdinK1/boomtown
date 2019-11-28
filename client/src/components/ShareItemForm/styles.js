@@ -1,5 +1,3 @@
-import { flexbox } from '@material-ui/system'
-
 const styles = theme => ({
   form: {
     width: '400px'

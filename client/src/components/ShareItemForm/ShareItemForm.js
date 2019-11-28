@@ -1,11 +1,9 @@
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
-import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
 import MenuItem from '@material-ui/core/MenuItem'
 import InputLabel from '@material-ui/core/InputLabel'
-import TextField from '@material-ui/core/TextField'
 import React, { Component } from 'react'
 import Typography from '@material-ui/core/Typography'
 import { Select, Checkbox } from '@material-ui/core'
@@ -25,7 +23,7 @@ class ShareForm extends Component {
   }
 
   render() {
-    const { classes, allItems } = this.props
+    const { classes, allTags } = this.props
 
     return (
       <ItemPreviewContext.Consumer>
@@ -103,13 +101,13 @@ class ShareForm extends Component {
                     name='tags'
                     render={({ input }) => (
                       <Select
-                        value={allItems.tags}
+                        value={allTags.tags}
                         className={classes.formSelect}
                         id='tags'
                       >
-                        {allItems &&
-                          allItems.tags &&
-                          allItems.tags.map(({ title }) => (
+                        {allTags &&
+                          allTags.tags &&
+                          allTags.tags.map(({ title }) => (
                             <li className={classes.formOptionList}>
                               <Checkbox />
                               <MenuItem
@@ -151,7 +149,7 @@ export default compose(
         ALL_TAGS_QUERY
       }
     },
-    name: 'allItems'
+    name: 'allTags'
   }),
   withStyles(styles)
 )(ShareForm)
