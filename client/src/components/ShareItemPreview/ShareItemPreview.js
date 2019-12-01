@@ -7,14 +7,17 @@ import ItemCard from '../ItemCard/'
 const ShareItemPreview = () => {
   return (
     <ItemPreviewContext.Consumer>
-      {({ state }) => (
-        <ItemCard
-          imageUrl={state.item.itemImg}
-          itemOwner={state.item.itemowner}
-          itemName={state.item.itemName}
-          itemDesc={state.item.itemDesc}
-        />
-      )}
+      {({ state }) =>
+        console.log(state) || (
+          <ItemCard
+            imageUrl={state.item.itemImg}
+            itemOwner={state.item.itemowner}
+            itemName={state.item.itemName}
+            itemDesc={state.item.itemDesc}
+            itemTags={state.item.tags}
+          />
+        )
+      }
     </ItemPreviewContext.Consumer>
   )
 }

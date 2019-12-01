@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import { graphql, compose } from 'react-apollo'
 import Button from '@material-ui/core/Button'
 import { LOGOUT_MUTATION } from '../../apollo/queries'
+import client from '../../apollo'
 import Navbar from '.'
 
 const useStyles = makeStyles(theme => ({
@@ -62,21 +63,14 @@ const MenuAppBar = ({ logout, ...props }) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const logOutFunc = values => {
-    const logOutMutation = {
-      variables: {
-        user: values
-      }
-    }
-    logout(logOutMutation)
-    history.push('/welcome')
-    setAnchorEl(null)
-    console.log(logOutMutation)
+  const logOutFunc = () => {
+    logout()
+    client.resetStore()
   }
 
   return (
     <div className={classes.root}>
-      <AppBar position='fixed'>
+      <AppBar position='static'>
         <Toolbar className={classes.nav}>
           <Link to='/items'>
             <img src={logo} className={classes.logo} />

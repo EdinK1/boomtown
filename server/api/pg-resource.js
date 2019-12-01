@@ -34,6 +34,7 @@ module.exports = postgres => {
       }
       try {
         const user = await postgres.query(findUserQuery)
+        console.log(email)
         if (!user) throw 'User was not found.'
         return user.rows[0]
       } catch (e) {
@@ -47,6 +48,7 @@ module.exports = postgres => {
       }
       try {
         const user = await postgres.query(findUserQuery)
+        console.log(user.rows[0])
         return user.rows[0]
       } catch (err) {
         throw 'User not found'
@@ -61,7 +63,7 @@ module.exports = postgres => {
     },
     async getItemsForUser(id) {
       const items = await postgres.query({
-        text: `SELECT * FROM ITEMS WHERE ownnerId = $1`,
+        text: `SELECT * FROM ITEMS WHERE "ownerId" = $1`,
         values: [id]
       })
       return items.rows
@@ -70,7 +72,7 @@ module.exports = postgres => {
       const items = await postgres.query({
         text: `
           SELECT * FROM ITEMS
-            WHERE borrower = $1
+            WHERE "borrowerId" = $1
         `,
         values: [id]
       })
@@ -82,7 +84,7 @@ module.exports = postgres => {
     },
     async getTagsForItem(id) {
       const tagsQuery = {
-        text: `SELECT * FROM tags INNER JOIN itemtags ON tags.id=itemtags.tagid WHERE itemtags.itemid= $1`,
+        text: `SELECT * FROM itemstags INNER JOIN tags ON itemstags."tagId" = tags.id WHERE itemstags."itemId"=$1`,
         values: [id]
       }
 
@@ -94,15 +96,17 @@ module.exports = postgres => {
         postgres.connect((err, client, done) => {
           try {
             client.query('BEGIN', async err => {
-              const { title, description, tags } = item
-
+              const { title, description, tags, id, imageurl } = item
+              console.log(item)
               const itemQuery = {
-                text: `INSERT INTO items(title, description, itemowner) VALUES ($1, $2, $3) RETURNING *`,
-                values: [title, description, user]
+                text: `INSERT INTO items(title, description, tags, id, "imageurl") VALUES ($1, $2, $3, $4, $5 ) RETURNING *`,
+                values: [title, description, tags, id, imageUrl]
               }
+
               const newItem = await postgres.query(itemQuery)
+
               const tagsWithItems = {
-                text: `INSERT INTO itemtags(tagid, itemid) VALUES ${tagsQueryString(
+                text: `INSERT INTO itemstags(tagid, itemid) VALUES ${tagsQueryString(
                   [...tags],
                   newItem.rows[0].id,
                   ''

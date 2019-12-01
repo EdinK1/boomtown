@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const ItemCard = ({ imageUrl, itemOwner, itemName, itemDesc }) => {
+const ItemCard = ({ imageUrl, itemOwner, itemName, itemDesc, itemTags }) => {
   const classes = useStyles()
   return (
     <Card className={classes.card}>
@@ -44,7 +44,6 @@ const ItemCard = ({ imageUrl, itemOwner, itemName, itemDesc }) => {
               src={itemOwner}
               className={classes.avatar}
             />
-            {/* <span>{state.item.itemowner}</span> */}
           </div>
           <section className={classes.cardContent}>
             <Typography gutterBottom variant='h5' component='h2'>
@@ -52,6 +51,10 @@ const ItemCard = ({ imageUrl, itemOwner, itemName, itemDesc }) => {
             </Typography>
             <Typography variant='body2' color='textSecondary' component='p'>
               {itemDesc}
+            </Typography>
+            <Typography variant='body2' color='textSecondary' component='p'>
+              {/* {itemTags.length > 0 &&
+                itemTags.map(({ title }) => title).join(', ')} */}
             </Typography>
           </section>
         </CardContent>

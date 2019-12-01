@@ -7,7 +7,7 @@ const relationResolvers = {
         const itemowner = await pgResource.getItemsForUser(id)
         return itemowner
       } catch (e) {
-        throw new AppoloError(e)
+        throw new ApolloError(e)
       }
     },
 
@@ -16,7 +16,7 @@ const relationResolvers = {
         const borrowedItem = await pgResource.getBorrowedItemsForUser(id)
         return borrowedItem
       } catch (e) {
-        throw new AppoloError(e)
+        throw new ApolloError(e)
       }
     }
   },
@@ -25,9 +25,10 @@ const relationResolvers = {
     async itemowner({ itemowner }, args, { pgResource }) {
       try {
         const getItemOwner = await pgResource.getUserById(itemowner)
+        console.log('???', itemowner)
         return getItemOwner
       } catch (e) {
-        throw new AppoloError(e)
+        throw new ApolloError(e)
       }
     },
 
@@ -36,7 +37,7 @@ const relationResolvers = {
         const getTags = await pgResource.getTagsForItem(id)
         return getTags
       } catch (e) {
-        throw new AppoloError(e)
+        throw new ApolloError(e)
       }
     },
 
@@ -45,7 +46,7 @@ const relationResolvers = {
         const borrowedItem = await pgResource.getUserById(id)
         return borrowedItem
       } catch (e) {
-        throw new AppoloError(e)
+        throw new ApolloError(e)
       }
     }
   }

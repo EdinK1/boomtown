@@ -8,9 +8,9 @@ module.exports = gql`
     id: ID!
     title: String!
     imageurl: String
-    description: String!
-    itemowner: User!
-    created: Date!
+    description: String
+    itemowner: User
+    created: Date
     tags: [Tag]
     borrower: User
   }
@@ -43,17 +43,20 @@ module.exports = gql`
 
   input AssignedTag {
     id: ID!
-    title: String!
   }
 
   input AssignedBorrower {
     id: ID!
   }
 
+  input AssignedOwner {
+    id: ID!
+  }
+
   input NewItemInput {
     title: String!
-    description: String
-    tags: [AssignedTag]!
+    description: String!
+    tags: [ID]!
   }
 
   input SignupInput {

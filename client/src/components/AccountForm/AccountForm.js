@@ -1,6 +1,5 @@
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-import { withRouter } from 'react-router'
 import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
@@ -11,8 +10,8 @@ import { Form, Field } from 'react-final-form'
 import { graphql, compose } from 'react-apollo'
 import {
   LOGIN_MUTATION,
-  SIGNUP_MUTATION
-  // VIEWER_QUERY
+  SIGNUP_MUTATION,
+  VIEWER_QUERY
 } from '../../apollo/queries'
 // import validate from './helpers/validation'
 
@@ -37,8 +36,6 @@ class AccountForm extends Component {
             }
           }
           this.state.formToggle ? login(userMutation) : signup(userMutation)
-          this.props.history.push('/items')
-          console.log(userMutation)
         }}
         render={({ handleSubmit, form, invalid, pristine, values }) => (
           <form onSubmit={handleSubmit} className={classes.accountForm}>
@@ -108,7 +105,7 @@ class AccountForm extends Component {
                   variant='contained'
                   size='large'
                   color='secondary'
-                  disabled={false}
+                  disabled={pristine || invalid}
                 >
                   {this.state.formToggle ? 'Enter' : 'Create Account'}
                 </Button>
@@ -118,10 +115,7 @@ class AccountForm extends Component {
                     type='button'
                     onClick={() => {
                       this.setState({
-                        formToggle: !this.state.formToggle,
-                        fullname: '',
-                        email: '',
-                        password: ''
+                        formToggle: !this.state.formToggle
                       })
                     }}
                   >
@@ -142,19 +136,24 @@ class AccountForm extends Component {
   }
 }
 
-// const refetchQueries = [
-//   {
-//     query: VIEWER_QUERY
-//   }
-// ]
+const refetchQueries = [
+  {
+    query: VIEWER_QUERY
+  }
+]
 
 export default compose(
   graphql(SIGNUP_MUTATION, {
+    options: {
+      refetchQueries
+    },
     name: 'signup'
   }),
   graphql(LOGIN_MUTATION, {
+    options: {
+      refetchQueries
+    },
     name: 'login'
   }),
-  withStyles(styles),
-  withRouter
+  withStyles(styles)
 )(AccountForm)

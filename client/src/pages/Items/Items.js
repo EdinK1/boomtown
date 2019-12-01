@@ -1,28 +1,23 @@
 import React from 'react'
-// import { withStyles } from '@material-ui/core/styles'
-import { useMutation } from '@apollo/react-hooks'
 import ItemCard from '../../components/ItemCard/'
 import { ALL_ITEMS_QUERY } from '../../apollo/queries'
-import ViewerProvider from '../../context/ViewerProvider'
 import { graphql, compose } from 'react-apollo'
-const Items = ({ classes, allItems }) => {
-  return (
-    <ViewerProvider.Consumer>
-      {({ data, loading }) => {
-        console.log(allItems)
-        return (
-          <>
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-          </>
-        )
-      }}
-    </ViewerProvider.Consumer>
-  )
-}
+const Items = ({ classes, allItems }) => (
+  <>
+    {!allItems.loading &&
+      allItems.items.map(item => (
+        <ItemCard
+          key={item.id}
+          id={item.id}
+          imageUrl={item.imageUrl}
+          itemName={item.title}
+          itemDesc={item.description}
+          itemOwner={item.itemonwer}
+          itemTags={item.itemTags}
+        />
+      ))}
+  </>
+)
 
 export default compose(
   graphql(ALL_ITEMS_QUERY, {

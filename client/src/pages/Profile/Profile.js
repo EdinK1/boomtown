@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
+import ViewerContext from '../../context/ViewerProvider'
+import ProfileQuery from '../../components/ProfileContent/ProfileQuery'
 
 const Profile = ({ classes }) => {
+  const { viewer, loading } = useContext(ViewerContext)
+
+  if (loading) return <p>loading...</p>
   return (
-    <main>
-      <header>
-        <h1 style={{ fontSize: '10rem' }}>hehe</h1>
-      </header>
-    </main>
+    <>
+      <main>{viewer && <ProfileQuery viewer={viewer} />}</main>
+    </>
   )
 }
 

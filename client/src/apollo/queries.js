@@ -27,7 +27,7 @@ const ItemFields = gql`
 `
 export const ITEM_QUERY = gql`
   query item($id: ID!) {
-    item(id: $id) {
+    items(id: $id) {
       ...ItemFields
     }
   }
@@ -36,8 +36,7 @@ export const ITEM_QUERY = gql`
 
 export const ALL_ITEMS_QUERY = gql`
   query items($filter: ID) {
-    id
-    item(filter: $filter) {
+    items(filter: $filter) {
       ...ItemFields
     }
   }
@@ -46,7 +45,6 @@ export const ALL_ITEMS_QUERY = gql`
 
 export const ALL_USER_ITEMS_QUERY = gql`
   query user($id: ID!) {
-    id
     user(id: $id) {
       bio
       email
@@ -55,15 +53,16 @@ export const ALL_USER_ITEMS_QUERY = gql`
         ...ItemFields
       }
       borrowed {
-        ...itemFields
+        ...ItemFields
       }
     }
   }
+
   ${ItemFields}
 `
 
 export const ALL_TAGS_QUERY = gql`
-  query {
+  query tags {
     tags {
       id
       title
@@ -77,18 +76,26 @@ export const ADD_ITEM_MUTATION = gql`
       id
       title
       description
+      imageurl
       tags {
         id
         title
       }
-      imageURL
     }
+
+    # id: ID!
+    # title: String!
+    # imageurl: String
+    # description: String
+    # itemowner: User
+    # created: Date
+    # tags: [Tag]
   }
 `
 
 export const VIEWER_QUERY = gql`
   query viewer {
-    user {
+    viewer {
       id
       email
       fullName
@@ -98,13 +105,8 @@ export const VIEWER_QUERY = gql`
 `
 
 export const LOGOUT_MUTATION = gql`
-  mutation logout($user: logout!) {
-    logout(user: $user) {
-      token
-      user {
-        id
-      }
-    }
+  mutation logout {
+    logout
   }
 `
 
