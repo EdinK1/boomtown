@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
@@ -15,7 +15,8 @@ import { graphql, compose } from 'react-apollo'
 import Button from '@material-ui/core/Button'
 import { LOGOUT_MUTATION } from '../../apollo/queries'
 import client from '../../apollo'
-import Navbar from '.'
+import Icon from '@material-ui/core/Icon'
+import { loadCSS } from 'fg-loadcss'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,19 +46,29 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     alignContent: 'center'
   },
-  shareBtn: {
+  navShareBtn: {
     fontSize: '0.8rem',
     borderRadius: '25px',
     paddingRight: '1.5rem'
+  },
+  navShareBtnIcon: {
+    fontSize: '1.15rem',
+    marginRight: '0.7rem'
   }
 }))
 
 const MenuAppBar = ({ logout, ...props }) => {
   const classes = useStyles()
-  const [auth, setAuth] = useState(true)
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const history = useHistory()
+
+  useEffect(() => {
+    loadCSS(
+      'https://use.fontawesome.com/releases/v5.1.0/css/all.css',
+      document.querySelector('#font-awesome-css')
+    )
+  }, [])
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget)
@@ -73,62 +84,61 @@ const MenuAppBar = ({ logout, ...props }) => {
       <AppBar position='static'>
         <Toolbar className={classes.nav}>
           <Link to='/items'>
-            <img src={logo} className={classes.logo} />
+            <img alt='boomtown logo' src={logo} className={classes.logo} />
           </Link>
-
-          {auth && (
-            <section className={classes.navRight}>
-              {history.location.pathname !== '/share' && (
-                <Button
-                  className={classes.shareBtn}
-                  onClick={() => history.push('/share')}
-                >
-                  Share something
-                </Button>
-              )}
-              <div>
-                <IconButton
-                  aria-label='account of current user'
-                  aria-controls='menu-appbar'
-                  aria-haspopup='true'
-                  onClick={handleMenu}
-                  color='inherit'
-                >
-                  <MoreIcon />
-                </IconButton>
-                <Menu
-                  id='menu-appbar'
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right'
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right'
-                  }}
-                  open={open}
-                  onClose={() => setAnchorEl(null)}
-                >
+          <section className={classes.navRight}>
+            {history.location.pathname !== '/share' && (
+              <Button
+                className={classes.navShareBtn}
+                onClick={() => history.push('/share')}
+              >
+                <Icon
+                  className={`${classes.navShareBtnIcon} fa fa-plus-circle`}
+                />
+                Share something
+              </Button>
+            )}
+            <div>
+              <IconButton
+                aria-label='account of current user'
+                aria-controls='menu-appbar'
+                aria-haspopup='true'
+                onClick={handleMenu}
+                color='inherit'
+              >
+                <MoreIcon />
+              </IconButton>
+              <Menu
+                id='menu-appbar'
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+              >
+                <Link to='/profile'>
                   <MenuItem
                     className={classes.navMenuList}
                     onClick={() => setAnchorEl(null)}
                   >
                     <Fingerprint className={classes.navMenuListIcon} />
-                    <Link to='/profile'>Your Profile</Link>
+                    Your Profile
                   </MenuItem>
-                  <MenuItem
-                    className={classes.navMenuList}
-                    onClick={logOutFunc}
-                  >
-                    <LogOut className={classes.navMenuListIcon} />
-                    Sign Out
-                  </MenuItem>
-                </Menu>
-              </div>
-            </section>
-          )}
+                </Link>
+                <MenuItem className={classes.navMenuList} onClick={logOutFunc}>
+                  <LogOut className={classes.navMenuListIcon} />
+                  Sign Out
+                </MenuItem>
+              </Menu>
+            </div>
+          </section>
         </Toolbar>
       </AppBar>
     </div>

@@ -1,8 +1,15 @@
 const styles = theme => ({
   mainGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gridGap: '25px'
+    gridGap: '25px',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gridTemplateRows: 'auto'
+    },
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: 'repeat(3, 1fr)',
+      gridTemplateRows: 'auto'
+    }
   }
 })
 

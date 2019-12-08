@@ -13,7 +13,7 @@ import {
   SIGNUP_MUTATION,
   VIEWER_QUERY
 } from '../../apollo/queries'
-// import validate from './helpers/validation'
+import validate from './helpers/validation'
 
 import styles from './styles'
 
@@ -37,7 +37,8 @@ class AccountForm extends Component {
           }
           this.state.formToggle ? login(userMutation) : signup(userMutation)
         }}
-        render={({ handleSubmit, form, invalid, pristine, values }) => (
+        validate={values => validate(values)}
+        render={({ handleSubmit, invalid, pristine, values }) => (
           <form onSubmit={handleSubmit} className={classes.accountForm}>
             {!this.state.formToggle && (
               <FormControl fullWidth className={classes.formControl}>
@@ -48,6 +49,7 @@ class AccountForm extends Component {
                     <Input
                       id='fullName'
                       type='text'
+                      error={meta.touched && !!meta.error}
                       inputProps={{
                         ...input,
                         autoComplete: 'off'
@@ -66,6 +68,7 @@ class AccountForm extends Component {
                   <Input
                     id='email'
                     type='email'
+                    error={meta.touched && !!meta.error}
                     inputProps={{
                       ...input,
                       autoComplete: 'off'
@@ -83,6 +86,7 @@ class AccountForm extends Component {
                 render={({ input, meta }) => (
                   <Input
                     id='password'
+                    error={meta.touched && !!meta.error}
                     inputProps={{
                       ...input,
                       autoComplete: 'off'
@@ -127,7 +131,7 @@ class AccountForm extends Component {
               </Grid>
             </FormControl>
             <Typography className={classes.errorMessage}>
-              {/* @TODO: Display sign-up and login errors */}
+              {/* {console.log(values)} */}
             </Typography>
           </form>
         )}

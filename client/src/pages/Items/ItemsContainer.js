@@ -1,26 +1,21 @@
-import React, { Component } from 'react'
+import React, { useContext } from 'react'
 import Items from './Items'
 import styles from './styles'
-// import { Query } from 'react-apollo';
-// import { } from '../../apollo/queries';
 import { withStyles } from '@material-ui/core/styles'
 import Navbar from '../../components/Navbar'
+import ViewerContext from '../../context/ViewerProvider'
 
-class ItemsContainer extends Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    const { classes } = this.props
-    return (
-      <>
-        <Navbar />
-        <main className={classes.mainGrid}>
-          <Items />
-        </main>
-      </>
-    )
-  }
+const ItemsContainer = ({ classes }) => {
+  const { viewer, loading } = useContext(ViewerContext)
+
+  return (
+    <>
+      <Navbar />
+      <main className={classes.mainGrid}>
+        <Items viewer={viewer} />
+      </main>
+    </>
+  )
 }
 
 export default withStyles(styles)(ItemsContainer)

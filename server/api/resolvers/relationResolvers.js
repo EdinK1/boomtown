@@ -25,7 +25,6 @@ const relationResolvers = {
     async itemowner({ itemowner }, args, { pgResource }) {
       try {
         const getItemOwner = await pgResource.getUserById(itemowner)
-        console.log('???', itemowner)
         return getItemOwner
       } catch (e) {
         throw new ApolloError(e)
@@ -35,6 +34,7 @@ const relationResolvers = {
     async tags({ id }, args, { pgResource }) {
       try {
         const getTags = await pgResource.getTagsForItem(id)
+        console.log(getTags)
         return getTags
       } catch (e) {
         throw new ApolloError(e)

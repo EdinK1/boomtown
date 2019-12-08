@@ -10,7 +10,9 @@ const Profile = ({ classes }) => {
   if (loading) return <p>loading...</p>
   return (
     <>
-      <main>{viewer && <ProfileQuery viewer={viewer} />}</main>
+      <main className={classes.profileContainer}>
+        {viewer && <ProfileQuery viewer={viewer} />}
+      </main>
     </>
   )
 }

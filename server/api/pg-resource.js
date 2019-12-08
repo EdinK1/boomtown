@@ -1,6 +1,6 @@
 function tagsQueryString(tags, itemid, result) {
-  for (i = tags.length; i > 0; i--) {
-    result += `($${i}, ${itemid}),`
+  for (i = 0; i < tags.length; i++) {
+    result += `(${i + 1}, ${itemid}),`
   }
   return result.slice(0, -1) + ';'
 }
@@ -34,7 +34,6 @@ module.exports = postgres => {
       }
       try {
         const user = await postgres.query(findUserQuery)
-        console.log(email)
         if (!user) throw 'User was not found.'
         return user.rows[0]
       } catch (e) {
@@ -48,7 +47,6 @@ module.exports = postgres => {
       }
       try {
         const user = await postgres.query(findUserQuery)
-        console.log(user.rows[0])
         return user.rows[0]
       } catch (err) {
         throw 'User not found'
@@ -96,24 +94,38 @@ module.exports = postgres => {
         postgres.connect((err, client, done) => {
           try {
             client.query('BEGIN', async err => {
-              const { title, description, tags, id, imageurl } = item
-              console.log(item)
+              const { title, description, tags, imageurl } = item
               const itemQuery = {
-                text: `INSERT INTO items(title, description, tags, id, "imageurl") VALUES ($1, $2, $3, $4, $5 ) RETURNING *`,
-                values: [title, description, tags, id, imageUrl]
+                text: `INSERT INTO items(title, description, "ownerId", imageurl) VALUES ($1, $2, $3, $4) RETURNING *`,
+                values: [title, description, user.id, imageurl]
               }
 
               const newItem = await postgres.query(itemQuery)
 
               const tagsWithItems = {
-                text: `INSERT INTO itemstags(tagid, itemid) VALUES ${tagsQueryString(
+                text: `INSERT INTO itemstags("tagId", "itemId") VALUES ${tagsQueryString(
                   [...tags],
                   newItem.rows[0].id,
                   ''
-                )} `,
-                values: tags.map(tag => tag.id)
+                )} `
               }
+
+              console.log(tagsWithItems)
+
               await postgres.query(tagsWithItems)
+
+              // if (Array.isArray(tags) && tags.length) {
+              //   await postgres.query({
+              //     text:
+              //       tags
+              //         .reduce(
+              //           (acc, val) => `${acc}(${newItemId}, $${val}),`,
+              //           'INSERT INTO item_tags ("item_id", "tag_id") VALUES '
+              //         )
+              //         .slice(0, -1) + ';',
+              //     values: tags
+              //   })
+              // }
 
               client.query('COMMIT', err => {
                 if (err) {

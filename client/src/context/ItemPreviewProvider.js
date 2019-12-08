@@ -1,14 +1,15 @@
-import React, { Component, createContext, Children } from 'react'
-
+import React, { Component, createContext } from 'react'
+import * as timeago from 'timeago.js'
 export const ItemPreviewContext = createContext()
 
 const initialState = {
   itemName: 'Name your Item',
   itemDesc: 'Describe your item',
   tags: [],
-  itemImg: 'https://via.placeholder.com/300',
-  itemowner: {},
-  created: new Date()
+  itemImg:
+    'https://img.thedailybeast.com/image/upload/v1531451526/180712-Weill--The-Creator-of-Pepe-hero_uionjj.jpg',
+  itemowner: 'PEPE',
+  created: timeago.format(new Date())
 }
 
 class ItemPreviewProvider extends Component {

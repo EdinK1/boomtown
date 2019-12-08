@@ -1,6 +1,9 @@
 const styles = theme => ({
   form: {
-    width: '400px'
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '400px'
+    }
   },
   formTitle: {
     fontSize: '2.8rem',

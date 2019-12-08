@@ -5,7 +5,6 @@ import Home from '../pages/Home/index'
 import Share from '../pages/Share/index'
 import Profile from '../pages/Profile/index'
 import ViewerContext from '../context/ViewerProvider'
-import Navbar from '../components/Navbar'
 export default props => (
   <ViewerContext.Consumer>
     {({ viewer, loading }) => {

@@ -4,7 +4,10 @@ const styles = theme => ({
     height: '100vh',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    width: '90%'
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '90%'
+    }
   }
 })
 

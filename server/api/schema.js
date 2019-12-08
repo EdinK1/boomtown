@@ -4,7 +4,7 @@ module.exports = gql`
   scalar Date
   directive @auth on OBJECT | FIELD_DEFINITION
 
-  type Item @auth {
+  type Item {
     id: ID!
     title: String!
     imageurl: String
@@ -15,7 +15,7 @@ module.exports = gql`
     borrower: User
   }
 
-  type User @auth {
+  type User {
     id: ID!
     email: String!
     fullName: String!
@@ -57,6 +57,7 @@ module.exports = gql`
     title: String!
     description: String!
     tags: [ID]!
+    imageurl: String!
   }
 
   input SignupInput {
@@ -70,14 +71,14 @@ module.exports = gql`
     password: String!
   }
 
-  type Query {
+  type Query @auth {
     user(id: ID!): User
     viewer: User
     items(filter: ID): [Item]
     tags: [Tag]
   }
 
-  type Mutation {
+  type Mutation @auth {
     signup(user: SignupInput!): AuthPayload!
     login(user: LoginInput!): AuthPayload!
     logout: Boolean!

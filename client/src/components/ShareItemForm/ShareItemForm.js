@@ -35,13 +35,13 @@ class ShareForm extends Component {
                       item: {
                         title: values.itemName,
                         description: values.itemDesc,
-                        tags: values.tags
+                        imageurl: values.itemImg,
+                        tags: values.tags.map(tag => parseInt(tag))
                       }
                     }
                   }
-                  console.log(values)
-
                   addItem(addItemMutation)
+                  console.log(addItem)
                 }}
                 render={({ handleSubmit }) => (
                   <form
