@@ -6,7 +6,7 @@ import Navbar from '../../components/Navbar'
 import ViewerContext from '../../context/ViewerProvider'
 
 const ItemsContainer = ({ classes }) => {
-  const { viewer, loading } = useContext(ViewerContext)
+  const { viewer } = useContext(ViewerContext)
 
   return (
     <>

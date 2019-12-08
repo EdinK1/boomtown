@@ -4,19 +4,20 @@ import styles from './styles'
 import { ItemPreviewContext } from '../../context/ItemPreviewProvider'
 import ItemCard from '../ItemCard/'
 
-const ShareItemPreview = () => {
+const ShareItemPreview = ({ classes }) => {
   return (
     <ItemPreviewContext.Consumer>
       {({ state }) => (
-        <ItemCard
-          imageUrl={state.item.itemImg}
-          // TODO: Don't forget to change the above to (state.item.itemowner)
-          itemOwner='test'
-          itemName={state.item.itemName}
-          itemDesc={state.item.itemDesc}
-          itemTags={state.item.tags}
-          created={state.item.created}
-        />
+        <section>
+          <ItemCard
+            imageUrl={state.item.itemImg}
+            itemOwner={state.item.itemowner}
+            itemName={state.item.itemName}
+            itemDesc={state.item.itemDesc}
+            itemTags={state.item.tags}
+            created={state.item.created}
+          />
+        </section>
       )}
     </ItemPreviewContext.Consumer>
   )

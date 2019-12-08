@@ -110,22 +110,7 @@ module.exports = postgres => {
                 )} `
               }
 
-              console.log(tagsWithItems)
-
               await postgres.query(tagsWithItems)
-
-              // if (Array.isArray(tags) && tags.length) {
-              //   await postgres.query({
-              //     text:
-              //       tags
-              //         .reduce(
-              //           (acc, val) => `${acc}(${newItemId}, $${val}),`,
-              //           'INSERT INTO item_tags ("item_id", "tag_id") VALUES '
-              //         )
-              //         .slice(0, -1) + ';',
-              //     values: tags
-              //   })
-              // }
 
               client.query('COMMIT', err => {
                 if (err) {

@@ -46,7 +46,7 @@ const styles = theme => ({
     }
   },
   sharedItem: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.down('sm')]: {
       margin: '0 auto'
     }
   }

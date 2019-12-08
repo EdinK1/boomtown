@@ -6,6 +6,7 @@ import ItemCard from '../ItemCard'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
+import Spinner from '../Spinner/Spinner'
 
 const ProfileQuery = ({ classes, viewer }) =>
   viewer ? (
@@ -49,7 +50,7 @@ const ProfileQuery = ({ classes, viewer }) =>
       }}
     </Query>
   ) : (
-    <p>loading...</p>
+    <Spinner />
   )
 
 export default withStyles(styles)(ProfileQuery)

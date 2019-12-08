@@ -16,10 +16,6 @@ import { ItemPreviewContext } from '../../context/ItemPreviewProvider'
 import ViewerContext from '../../context/ViewerProvider'
 
 class ShareForm extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     const { classes, allTags, addItem } = this.props
 

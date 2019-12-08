@@ -34,7 +34,6 @@ const relationResolvers = {
     async tags({ id }, args, { pgResource }) {
       try {
         const getTags = await pgResource.getTagsForItem(id)
-        console.log(getTags)
         return getTags
       } catch (e) {
         throw new ApolloError(e)

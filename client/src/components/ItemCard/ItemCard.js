@@ -9,11 +9,11 @@ import Typography from '@material-ui/core/Typography'
 import Gravatar from 'react-gravatar'
 import { makeStyles } from '@material-ui/core/styles'
 import ViewerContext from '../../context/ViewerProvider'
-
+import { useHistory } from 'react-router-dom'
 const useStyles = makeStyles(theme => ({
   card: {
     [theme.breakpoints.up('sm')]: {
-      width: '400px'
+      width: '100%'
     },
     width: '100%'
   },
@@ -48,9 +48,8 @@ const ItemCard = ({
   itemTags,
   created
 }) => {
-  console.log(imageUrl)
+  const history = useHistory()
   const classes = useStyles()
-  console.log(itemTags)
   const { viewer, loading } = useContext(ViewerContext)
   if (loading) return <p>loading...</p>
   return (
@@ -91,7 +90,12 @@ const ItemCard = ({
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button className={classes.borrowBtn} size='small' color='secondary'>
+        <Button
+          disabled={history.location.pathname === '/share' ? true : false}
+          className={classes.borrowBtn}
+          size='small'
+          color='secondary'
+        >
           Borrow
         </Button>
       </CardActions>

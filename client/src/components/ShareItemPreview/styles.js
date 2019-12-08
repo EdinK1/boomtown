@@ -1,6 +1,6 @@
 const styles = theme => ({
   card: {
-    width: '400px'
+    width: '450px'
   },
   cardContent: {
     margin: '2rem 0'
