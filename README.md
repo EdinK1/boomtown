@@ -1,6 +1,6 @@
 # Boomtown
 
-## CRUD application using React on the front end and Apollo, GraphQL with Postgresql for the backend.
+CRUD application using React on the front end and Apollo, GraphQL with Postgresql for the backend.
 
 # Technologies used
 1. React
