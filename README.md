@@ -13,7 +13,7 @@
 9. Postgresql
 
 
-# Server
+# Setup
 
 Commands must be run from the server directory:
 Installation
