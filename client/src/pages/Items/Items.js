@@ -11,7 +11,6 @@ const Items = ({ classes, viewer }) => {
       {({ loading, error, data }) => {
         if (loading) return <Spinner />
         if (error) return <p>somethig's wrong</p>
-
         const redirectToUserProfile = data => {
           let history = useHistory()
           history.push(`/`)
@@ -20,12 +19,12 @@ const Items = ({ classes, viewer }) => {
           <ItemCard
             key={item.id}
             imageUrl={
-              item.imageUrl ||
+              item.imageurl ||
               'https://img.thedailybeast.com/image/upload/v1531451526/180712-Weill--The-Creator-of-Pepe-hero_uionjj.jpg'
             }
             itemName={item.title}
             itemDesc={item.description}
-            itemOwner={item.itemowner}
+            itemOwner={viewer.fullname}
             itemTags={item.tags}
             created={item.created}
             onClick={redirectToUserProfile}

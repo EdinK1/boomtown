@@ -6,10 +6,10 @@ const initialState = {
   itemName: 'Name your Item',
   itemDesc: 'Describe your item',
   tags: [],
+  itemOwner: 'PEPE',
+  created: timeago.format(new Date()),
   itemImg:
-    'https://img.thedailybeast.com/image/upload/v1531451526/180712-Weill--The-Creator-of-Pepe-hero_uionjj.jpg',
-  itemowner: 'PEPE',
-  created: timeago.format(new Date())
+    'https://img.thedailybeast.com/image/upload/v1531451526/180712-Weill--The-Creator-of-Pepe-hero_uionjj.jpg'
 }
 
 class ItemPreviewProvider extends Component {

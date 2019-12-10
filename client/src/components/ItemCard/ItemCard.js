@@ -10,6 +10,8 @@ import Gravatar from 'react-gravatar'
 import { makeStyles } from '@material-ui/core/styles'
 import ViewerContext from '../../context/ViewerProvider'
 import { useHistory } from 'react-router-dom'
+import * as timeago from 'timeago.js'
+
 const useStyles = makeStyles(theme => ({
   card: {
     [theme.breakpoints.up('sm')]: {
@@ -40,18 +42,10 @@ const useStyles = makeStyles(theme => ({
     fontSize: '0.9rem'
   }
 }))
-const ItemCard = ({
-  imageUrl,
-  itemOwner,
-  itemName,
-  itemDesc,
-  itemTags,
-  created
-}) => {
+const ItemCard = ({ imageUrl, itemName, itemDesc, itemTags, created }) => {
   const history = useHistory()
   const classes = useStyles()
-  const { viewer, loading } = useContext(ViewerContext)
-  if (loading) return <p>loading...</p>
+  const { viewer } = useContext(ViewerContext)
   return (
     <Card className={classes.card}>
       <CardActionArea>
@@ -60,8 +54,8 @@ const ItemCard = ({
           <section className={classes.cardUserHeader}>
             <Gravatar
               default='robohash'
-              className={classes.gravatar}
               email={viewer.email}
+              className={classes.gravatar}
             />
             <section className={classes.cardUserInfo}>
               <Typography
@@ -69,10 +63,10 @@ const ItemCard = ({
                 variant='body1'
                 component='h3'
               >
-                {itemOwner}
+                {viewer.fullName}
               </Typography>
               <Typography variant='body2' component='p'>
-                {created}
+                {created || timeago.format(new Date())}
               </Typography>
             </section>
           </section>
@@ -91,7 +85,7 @@ const ItemCard = ({
       </CardActionArea>
       <CardActions>
         <Button
-          disabled={history.location.pathname === '/share' ? true : false}
+          disabled={history.location.pathname !== '/items' ? true : false}
           className={classes.borrowBtn}
           size='small'
           color='secondary'

@@ -11,11 +11,11 @@ const ShareItemPreview = ({ classes }) => {
         <section>
           <ItemCard
             imageUrl={state.item.itemImg}
-            itemOwner={state.item.itemowner}
             itemName={state.item.itemName}
             itemDesc={state.item.itemDesc}
-            itemTags={state.item.tags}
+            itemOwner={state.item.itemOwner}
             created={state.item.created}
+            itemTags={state.item.tags}
           />
         </section>
       )}

@@ -130,9 +130,7 @@ class AccountForm extends Component {
                 </Typography>
               </Grid>
             </FormControl>
-            <Typography className={classes.errorMessage}>
-              {/* {console.log(values)} */}
-            </Typography>
+            <Typography className={classes.errorMessage}></Typography>
           </form>
         )}
       />

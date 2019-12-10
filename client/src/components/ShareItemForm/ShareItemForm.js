@@ -37,7 +37,6 @@ class ShareForm extends Component {
                     }
                   }
                   addItem(addItemMutation)
-                  console.log(addItem)
                 }}
                 render={({ handleSubmit }) => (
                   <form

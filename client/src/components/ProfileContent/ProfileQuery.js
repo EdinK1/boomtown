@@ -12,7 +12,7 @@ const ProfileQuery = ({ classes, viewer }) =>
   viewer ? (
     <Query query={ALL_USER_ITEMS_QUERY} variables={{ id: viewer.id }}>
       {({ loading, error, data }) => {
-        if (loading) return null
+        if (loading) return <Spinner />
         if (error) return `Error! ${error}`
         return (
           <>
@@ -32,10 +32,7 @@ const ProfileQuery = ({ classes, viewer }) =>
                   <li className={classes.sharedItem} key={item.id}>
                     <ItemCard
                       id={item.id}
-                      imageUrl={
-                        item.imageurl ||
-                        'https://img.thedailybeast.com/image/upload/v1531451526/180712-Weill--The-Creator-of-Pepe-hero_uionjj.jpg'
-                      }
+                      imageUrl={item.imageurl}
                       itemName={item.title}
                       itemDesc={item.description}
                       itemOwner={item.itemowner}
